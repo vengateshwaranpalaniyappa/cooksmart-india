@@ -55,7 +55,8 @@ export async function GET(req: Request) {
       const mealPlanUrl = `${baseUrl}/api/track-click?userId=${user._id}&redirect=${encodeURIComponent(rawMealPlanUrl)}`;
       const recipeUrl = `${baseUrl}/api/track-click?userId=${user._id}&recipeId=${recommendedRecipe._id}&redirect=${encodeURIComponent(rawRecipeUrl)}`;
 
-      const transportType = user.reminder?.type === 'whatsapp' ? 'WhatsApp' : 'Email';
+      type TransportType = 'email' | 'whatsapp';
+      const transportType = user.reminder?.type as TransportType | undefined;
       const destination = user.reminder?.contact || user.email;
 
       if (transportType === 'whatsapp') {
