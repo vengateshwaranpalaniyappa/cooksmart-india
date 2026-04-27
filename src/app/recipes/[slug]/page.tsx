@@ -172,7 +172,7 @@ export default async function RecipeDetailPage({ params }: { params: { slug: str
             {mealPlan.map((meal, idx) => (
               <div key={idx} className="flex flex-col">
                 <span className="text-xs font-black uppercase tracking-widest text-brand-600 dark:text-brand-400 mb-3 px-2">{meal.label}</span>
-                <RecipeCard recipe={meal.recipe} />
+                {meal.recipe && <RecipeCard recipe={meal.recipe} />}
               </div>
             ))}
           </div>
