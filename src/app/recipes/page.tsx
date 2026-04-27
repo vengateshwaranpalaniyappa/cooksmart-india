@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { RecipeFinder } from '@/components/recipes/RecipeFinder';
 import { Metadata } from 'next';
 

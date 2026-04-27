@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { getRecipes } from '@/lib/api';
 import Link from 'next/link';
 import { Metadata } from 'next';

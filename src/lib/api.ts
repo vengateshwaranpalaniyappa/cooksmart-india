@@ -3,6 +3,7 @@ import { Recipe as RecipeModel } from '@/models/Recipe';
 
 export interface Recipe {
   id: string;
+  _id?: string;
   name: string;
   slug?: string;
   ingredients: string[]; // Keep for backwards compatibility

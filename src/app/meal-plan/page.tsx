@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { getRecipes } from '@/lib/api';
 import { RecipeCard } from '@/components/ui/RecipeCard';
 import { Calendar, Flame, IndianRupee, Beef, Sparkles } from 'lucide-react';
@@ -7,9 +8,15 @@ export const revalidate = 86400; // Cache for 24 hours
 export default async function MealPlanPage() {
   const recipes = await getRecipes();
   
-  // Deterministic seed based on today's date so it changes every day
-  // Since we are using ISR (revalidate: 86400), it will regenerate once a day anyway.
-  
+  if (!recipes || recipes.length === 0) {
+    return (
+      <div className="py-20 text-center animate-in fade-in">
+        <h1 className="text-3xl font-bold mb-4">No Recipes Available</h1>
+        <p className="text-foreground/70">Please add some recipes to generate a meal plan.</p>
+      </div>
+    );
+  }
+
   // Categorize pools
   const breakfastPool = recipes.filter(r => r.calories < 400 || r.category.some(c => c.toLowerCase().includes('snack') || c.toLowerCase().includes('breakfast')));
   const lunchPool = recipes.filter(r => (r.calories >= 400 && r.calories <= 600) || r.category.some(c => c.toLowerCase().includes('lunch') || c.toLowerCase().includes('budget')));

@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { Clock, Flame, Tag, CheckCircle2, Calendar } from 'lucide-react';
@@ -67,6 +68,7 @@ export default async function RecipeDetailPage({ params }: { params: { slug: str
     recipe: m.recipe ? {
       ...m.recipe,
       id: m.recipe._id.toString(),
+      _id: m.recipe._id.toString(),
       time: `${m.recipe.cookingTime} mins`,
       ingredients: m.recipe.requiredIngredients || []
     } : null
@@ -103,6 +105,7 @@ export default async function RecipeDetailPage({ params }: { params: { slug: str
   const mappedSimilar = similarRecipes.map((r: any) => ({
     ...r,
     id: r._id.toString(),
+    _id: r._id.toString(),
     time: `${r.cookingTime} mins`,
     ingredients: r.requiredIngredients || []
   }));
@@ -110,6 +113,7 @@ export default async function RecipeDetailPage({ params }: { params: { slug: str
   const allMappedRecipes = allRecipes.map((r: any) => ({
     ...r,
     id: r._id.toString(),
+    _id: r._id.toString(),
     time: `${r.cookingTime} mins`,
     ingredients: r.requiredIngredients || []
   }));
@@ -172,7 +176,14 @@ export default async function RecipeDetailPage({ params }: { params: { slug: str
             {mealPlan.map((meal, idx) => (
               <div key={idx} className="flex flex-col">
                 <span className="text-xs font-black uppercase tracking-widest text-brand-600 dark:text-brand-400 mb-3 px-2">{meal.label}</span>
-                {meal.recipe && <RecipeCard recipe={meal.recipe} />}
+                {meal.recipe && (
+                  <RecipeCard
+                    recipe={{
+                      ...meal.recipe,
+                      steps: meal.recipe.steps ?? [],
+                    }}
+                  />
+                )}
               </div>
             ))}
           </div>
@@ -287,7 +298,7 @@ export default async function RecipeDetailPage({ params }: { params: { slug: str
           <h2 className="text-3xl font-bold tracking-tight mb-8">You Might Also Like</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {mappedSimilar.map(sr => (
-              <RecipeCard key={sr.id} recipe={sr} />
+              <RecipeCard key={sr.id} recipe={{ ...sr, steps: sr.steps ?? [] }} />
             ))}
           </div>
         </section>

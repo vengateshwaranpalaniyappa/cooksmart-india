@@ -212,8 +212,8 @@ function ResultsContent() {
                 Showing {filteredRecipes.length} recipes
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                {filteredRecipes.map(recipe => (
-                  <RecipeCard key={recipe.id || recipe._id} recipe={recipe as any} />
+                {filteredRecipes.map(r => ({ ...r, id: r.id || (r._id as string) })).map(recipe => (
+                  <RecipeCard key={recipe.id} recipe={recipe} />
                 ))}
               </div>
             </div>

@@ -15,6 +15,8 @@ export const authOptions: NextAuthOptions = {
       if (account?.provider === 'google') {
         try {
           await connectDB();
+          if (!user.email) return false;
+          
           const existingUser = await User.findOne({ email: user.email });
           
           if (!existingUser) {

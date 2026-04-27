@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { getRecipes } from '@/lib/api';
 import { RecipeCard } from '@/components/ui/RecipeCard';
 import { notFound } from 'next/navigation';
