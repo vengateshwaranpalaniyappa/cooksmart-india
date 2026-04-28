@@ -50,7 +50,7 @@ export async function getRecipes(): Promise<Recipe[]> {
     }));
   } catch (error) {
     console.error("MongoDB connection or fetch failed:", error);
-    throw new Error('Failed to fetch recipes from database');
+    return [];
   }
 }
 

@@ -12,24 +12,33 @@ import connectDB from '@/lib/mongodb';
 import { Recipe } from '@/models/Recipe';
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  await connectDB();
-  const recipe = await Recipe.findOne({ slug: params.slug }).lean();
-  
-  if (!recipe) return { title: 'Recipe Not Found' };
-  
-  return {
-    title: recipe.metaTitle || `${recipe.name} Recipe | CookSmart India`,
-    description: recipe.metaDescription || `Learn how to make ${recipe.name}. A delicious ${recipe.category?.join(', ')} recipe that takes ${recipe.cookingTime} mins to cook.`,
-    openGraph: {
-      images: [recipe.image],
-    }
-  };
+  try {
+    await connectDB();
+    const recipe = await Recipe.findOne({ slug: params.slug }).lean();
+    
+    if (!recipe) return { title: 'Recipe Not Found' };
+    
+    return {
+      title: recipe.metaTitle || `${recipe.name} Recipe | CookSmart India`,
+      description: recipe.metaDescription || `Learn how to make ${recipe.name}. A delicious ${recipe.category?.join(', ')} recipe that takes ${recipe.cookingTime} mins to cook.`,
+      openGraph: {
+        images: [recipe.image],
+      }
+    };
+  } catch (e) {
+    console.error("DB error in generateMetadata:", e);
+    return { title: 'Recipe | CookSmart India' };
+  }
 }
 
 export default async function RecipeDetailPage({ params }: { params: { slug: string } }) {
-  await connectDB();
-  
-  const rawRecipe = await Recipe.findOne({ slug: params.slug }).lean();
+  let rawRecipe = null;
+  try {
+    await connectDB();
+    rawRecipe = await Recipe.findOne({ slug: params.slug }).lean();
+  } catch (e) {
+    console.error("DB error in RecipeDetailPage:", e);
+  }
   
   if (!rawRecipe) {
     notFound();
