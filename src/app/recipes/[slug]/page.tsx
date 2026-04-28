@@ -50,12 +50,7 @@ export default async function RecipeDetailPage({ params }: { params: { slug: str
     id: rawRecipe._id.toString(),
     time: `${rawRecipe.cookingTime} mins`,
     ingredients: rawRecipe.requiredIngredients || [], 
-    steps: rawRecipe.steps && rawRecipe.steps.length > 0 ? rawRecipe.steps : [
-      "Prepare ingredients as listed.",
-      "Heat a pan over medium heat.",
-      "Cook ingredients until tender.",
-      "Serve hot and enjoy!"
-    ]
+    steps: rawRecipe.steps ?? []
   } as any;
 
   // Advanced data fetching & logic
